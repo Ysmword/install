@@ -1,0 +1,34 @@
+Linux安装redis方法
+1.执行wget命令
+ wget http://download.redis.io/releases/redis-6.2.6.tar.gz
+ 规律：如果想要下载其他版本，修改版本号即可
+2.解压文件
+tar -vxf redis-6.2.6.tar.gz
+3.进入解压文件
+cd redis-6.2.6
+4.执行make命令进行编译
+make
+5.如果想要修改redis的端口号，可以在redis-6.2.6目录下，找到redis.conf文件进行修改
+  5.1 vim redis.conf
+  5.2 找到port 6379
+  5.3 修改port的值
+  5.4 退出保存
+6.进入到redis-6.2.6/src目录下，
+  6.1 执行./redis-server ./redis.conf
+    6.1.1 开启redis
+  6.2 切换其他的终端端口，执行redis-cli
+    6.2.1 启动正常则可以
+7.如果想要不用每次都手动启动redis
+  7.1 进入到redis-6.2.6/src目录，执行nohup ./redis-server ./redis.conf &
+    7.1.1 nohup命令解释
+      如果你正在运行一个进程，而且你觉得在退出帐户时该进程还不会结束，那么可以使用nohup命令。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。
+    7.1.2 配合&命令解释
+      表示即使终端关闭，也不会将进程关停
+    
+      
+
+
+
+
+
+
