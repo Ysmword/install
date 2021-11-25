@@ -19,7 +19,7 @@ make
   6.2 切换其他的终端端口，执行redis-cli
     6.2.1 启动正常则可以
 7.如果想要不用每次都手动启动redis
-  7.1 进入到redis-6.2.6/src目录，执行nohup ./redis-server ./redis.conf &
+  7.1 进入到redis-6.2.6/src目录，执行nohup ./redis-server ../redis.conf &
     7.1.1 nohup命令解释
       如果你正在运行一个进程，而且你觉得在退出帐户时该进程还不会结束，那么可以使用nohup命令。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。
     7.1.2 配合&命令解释
