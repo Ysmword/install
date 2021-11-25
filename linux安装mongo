@@ -55,7 +55,7 @@ db.auth("useradmin","useradmin")
 7.可以直接使用其他的数据库了
 use test
 show collections
-db.
+
 
 
 
