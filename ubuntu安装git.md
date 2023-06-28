@@ -10,3 +10,12 @@ For Ubuntu, this PPA provides the latest stable upstream Git version
 ```sh
 add-apt-repository ppa:git-core/ppa # apt update; apt install git
 ```
+
+3. 添加配置
+```sh
+git config --global user.name "username"
+git config --global user.email "email"
+
+# 查看是否配置成功
+git config -l
+```
