@@ -24,8 +24,107 @@ make
       如果你正在运行一个进程，而且你觉得在退出帐户时该进程还不会结束，那么可以使用nohup命令。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。
     7.1.2 配合&命令解释
       表示即使终端关闭，也不会将进程关停
-    
-      
+
+
+####################################################
+启动管理脚本。注意需要redis.conf中将daemonize的值改为yes，表示开启后台运行
+
+#!/bin/bash
+MY_PATH=`readlink -f $0`
+ROOT_PATH=`dirname ${MY_PATH}`
+CONF_FIFE=${ROOT_PATH}/redis.conf
+redisD=${ROOT_PATH}/src/redis-server 
+LOG_PATH=${ROOT_PATH}/error.log
+
+usage()
+{
+	echo "Usage: $0 start|stop|restart|status"
+	exit 2
+}
+
+is_alive()
+{
+	if ps aux | grep -w redis-server | grep -v grep > /dev/null
+	then
+		redis_id=`ps aux | grep -w redis-server | grep -v grep | awk '{print $2}'`
+		return 0
+	else
+		return 1
+	fi
+}
+
+redis_status()
+{
+	if is_alive; then
+		echo "redis is running"
+		return 0
+	else 
+		echo "redis not running"
+		return 1
+	fi
+}
+
+redis_start()
+{
+	if is_alive; then
+		echo "redis is running"
+		return 0
+	fi
+	if [ -f CONF_FIFE ];then
+		echo "no config file"
+		return 1
+	fi
+	if [ -f redisD ];then
+		echo "no binary file"
+		return 1
+	fi
+	echo "------start redis-------"
+	${redisD} ${CONF_FIFE} 0</dev/null &>${LOG_PATH}
+	sleep 1
+	redis_status
+}
+		
+redis_stop()
+{
+	if ! is_alive; then
+		echo "redis not running"
+		return 0
+	fi
+	kill -INT ${redis_id} 1>/dev/null 2>&1
+	sleep 1
+	echo "stop redis DONE!"
+}
+
+redis_restart()
+{
+	if ! is_alive; then
+		echo "redis not running"
+		return 0
+	fi
+	echo "----stop redis---"
+	redis_stop
+	redis_start
+}
+
+
+if [[ $# -gt 2 ]] || [[ $# -lt 1 ]]; then usage; fi
+
+cd ${ROOT_PATH}
+
+case "$1" in
+"start")
+	redis_start;;
+"stop")
+	redis_stop;;
+"status")
+	redis_status;;
+"restart")
+	redis_restart;;
+*)
+	usage;;
+esac
+
+exit $?
 
 
 
