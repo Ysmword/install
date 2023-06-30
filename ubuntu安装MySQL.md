@@ -54,11 +54,45 @@ service mysql start
 service mysql stop
 ```
 
-## 六、设置远程链接
-需要打开MySQL的配置文件my.cnf，这个文件通常位于/etc/mysql/目录下。在此文件中，我们需要将bind-address选项的值改为0.0.0.0：
-```conf
-bind-address = 0.0.0.0
+# 卸载
+我们以卸载mySQL5.7为例；
+
+首先我们需要查看mysql依赖项，输入如下代码：
+```sh
+dpkg --list | grep mysql
 ```
-然后重启下：service mysql restart
+以上代码输入后回车，会输出类似于如下的代码：
+```sh
+ii libmysqlclient-dev 5.7.34-0ubuntu0.18.04.1 amd64 MySQL database development files
+ii libmysqlclient20:amd64 5.7.34-0ubuntu0.18.04.1 amd64 MySQL database client library
+ii mysql-client-5.7 5.7.34-0ubuntu0.18.04.1 amd64 MySQL database client binaries
+ii mysql-client-core-5.7 5.7.34-0ubuntu0.18.04.1 amd64 MySQL database core client binaries
+ii mysql-common 5.8+1.0.4 all MySQL database common files, e.g. /etc/mysql/my.cnf
+ii mysql-server-5.7 5.7.34-0ubuntu0.18.04.1 amd64 MySQL database server binaries and system database setup
+ii mysql-server-core-5.7 5.7.34-0ubuntu0.18.04.1 amd64 MySQL database server binaries
+```
+然后我们就来卸载mysql-common，输入如下代码：
+```
+sudo apt remove mysql-common
+```
+接下来我们就可以卸载并清除mysql5.7，输入如下代码：
+```
+sudo apt autoremove --purge mysql-server-5.7
+```
+
+接下来我们就要来清除残留数据，输入如下代码：
+```
+dpkg -l | grep ^rc| awk '{print$2}'| sudo xargs dpkg -P
+```
+
+接下来我们在此检查依赖项，输入如下代码：
+```
+dpkg --list | grep mysql
+```
+如果输出为空，那么表示mysql已经彻底卸载干净了，如果不为空那么我们还要继续进行删除卸载，继续输入如下代码：
+```
+ sudo apt autoremove --purge mysql-apt-config
+```
+到底为止，Ubuntu上的mysql就已经彻底删除卸载干净了。
 
 
