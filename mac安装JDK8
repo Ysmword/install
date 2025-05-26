@@ -1,0 +1,16 @@
+## 一、macOS 系统安装 JDK 8​​​
+### 安装 SDKMAN（多版本管理工具）：
+```bash
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+```
+### 安装 JDK 8
+```bash
+sdk install java 8.0.362-zulu  # Zulu 是 OpenJDK 的发行版
+```
+### 验证安装：
+```bash
+java -version  # 应输出 "1.8.0_362"
+javac -version
+```
+
